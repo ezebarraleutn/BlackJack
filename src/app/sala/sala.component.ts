@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartasService } from '../cartas.service';
-import { Carta } from '../interfaces/carta';
 import { Resultado } from '../interfaces/resultado';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sala',
   templateUrl: './sala.component.html',
   styleUrls: ['./sala.component.css']
 })
-export class SalaComponent implements OnInit {
+export class SalaComponent implements OnInit, OnDestroy {
 
   esJugador: boolean = true;
 
@@ -18,6 +18,8 @@ export class SalaComponent implements OnInit {
 
   mensaje: string = '';
 
+  private subs: Subscription = new Subscription();
+
   constructor(private cartas: CartasService) {
   }
 
@@ -25,34 +27,58 @@ export class SalaComponent implements OnInit {
   }
 
   iniciarJuego() {
-    this.esHabilitado = true;
-    this.mensaje = "";
-    this.cartas.reseteo();
-    this.esJugador = true;
-    this.cartas.inicio();
-    this.obtenerCartas();
-    this.controlarGanador();
+    this.subs.add(this.cartas.inicio().subscribe({
+      next: (result)=>{
+        this.resultado = result
+        this.esHabilitado = true;
+        this.mensaje = "";
+        this.esJugador = true;
+        this.controlarGanador();
+      },
+      error: ()=>{
+        alert("Error al iniciar partida");
+      }
+    }))
   }
 
   pedirCarta() {
-    this.cartas.pedir(this.esJugador);
-    this.obtenerCartas();
-    this.controlarGanador();
+    this.subs.add(this.cartas.pedir(this.esJugador).subscribe({
+      next: (result)=>{
+        this.resultado = result;
+        this.controlarGanador();
+      },
+      error: ()=>{
+        alert("Error al pedir carta");
+      }
+    }))
   }
 
   stand() {
-    this.esJugador = false;
-    this.cartas.pedirCrupier();
-    this.obtenerCartas();
-    this.controlarGanador();
+    this.subs.add(this.cartas.pedirCrupier().subscribe({
+      next: (result)=>{
+        this.resultado = result;
+        this.esJugador = false;
+        this.controlarGanador();
+      },
+      error: ()=>{
+        alert("Error en la accion solicitada");
+      }
+    }))
   }
 
   obtenerCartas() {
-    this.resultado = this.cartas.obtenerCartas();
+    this.subs.add(this.cartas.obtenerCartas().subscribe({
+      next: (result)=>{
+        this.resultado = result
+      },
+      error: ()=>{
+        alert("Error al obtener cartas");
+      }
+    }))
   }
 
   controlarGanador() {
-    if (this.resultado.totalC > 21 || (this.resultado.totalJ == 21 && this.cartas.cartasJ.length == 2) || (this.resultado.totalJ > this.resultado.totalC && !this.esJugador)) {
+    if (this.resultado.totalC > 21 || (this.resultado.totalJ == 21 && this.resultado.cartasJ.length == 2) || (this.resultado.totalJ > this.resultado.totalC && !this.esJugador)) {
       this.mensaje = "GANASTE!!";
       this.esHabilitado = false;
     } else if ((this.resultado.totalC > this.resultado.totalJ && !this.esJugador) || this.resultado.totalJ > 21) {
@@ -62,6 +88,10 @@ export class SalaComponent implements OnInit {
       this.mensaje = "EMPATE";
       this.esHabilitado = false;
     } 
+  }
+
+  ngOnDestroy():void{
+    this.subs.unsubscribe();
   }
 
 }
