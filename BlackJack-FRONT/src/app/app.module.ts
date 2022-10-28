@@ -10,18 +10,26 @@ import { CartasService } from './cartas.service';
 import { CardComponent } from './card/card.component';
 
 import { HttpClientModule } from "@angular/common/http";
+import { RegistrarComponent } from './autenticacion/registrar/registrar.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './autenticacion/login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     SalaComponent,
     BoardComponent,
-    CardComponent
+    CardComponent,
+    RegistrarComponent,
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [CartasService],
   bootstrap: [AppComponent]
