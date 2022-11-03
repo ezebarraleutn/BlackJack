@@ -1,20 +1,25 @@
 <div class="row justify-content-center">
 
-    <div class="col-md-4">
-        <h2>Login</h2>
+    <div class="col-md-6">
+        <h2>Iniciar sesión</h2>
         <br>
-        <form>
+        <form [formGroup]="formularioLogin">
             <div class="form-group">
-                <label for="exampleInputEmail1">Nombre de usuario</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                    else.</small>
+                <label for="nombre">Nombre de usuario</label>
+                <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <label for="password">Contraseña</label>
+                <input type="password" class="form-control" id="password" formControlName="password">
             </div>
-            <button type="submit" class="btn btn-primary" (click)="login()">Ingresar</button>
+            <br>
+            <p id="msgError" class="form-text text-muted" *ngIf="mensajeError" style="color: tomato;">{{mensajeError}}</p>
+            <button class="btn btn-primary" (click)="login()">Ingresar</button>
+            <br>
+            <br>
+            <button class="btn btn-success" (click)="registrar()">Registrarme</button>
         </form>
     </div>
+
 </div>

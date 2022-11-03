@@ -9,37 +9,28 @@ CREATE TABLE `blackjack`.`carta` (
   `valor` INT NOT NULL,
   `img` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idcarta`));
-  
-CREATE TABLE `blackjack`.`rol` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `descripcion` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`));
 
-CREATE TABLE `blackjack`.`player` (
-  `idplayer` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(10) NOT NULL,
-  `password` VARCHAR(8) NOT NULL,
-  `idrol` INT NULL,
-  PRIMARY KEY (`idplayer`),
-  INDEX `rol_fk_idx` (`idrol` ASC) VISIBLE,
-  CONSTRAINT `rol_fk`
-    FOREIGN KEY (`idrol`)
-    REFERENCES `blackjack`.`rol` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+CREATE TABLE `user` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `password` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
   
 CREATE TABLE `blackjack`.`resultado` (
   `idresultado` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATETIME NOT NULL,
+  `ganador` INT NULL, /*1 es perdedor, 2 es ganador, 3 empate*/
   PRIMARY KEY (`idresultado`));
+
   
 CREATE TABLE `blackjack`.`detalle_resultado` (
   `idresultado` INT NOT NULL,
   `idcarta` INT NOT NULL,
-  `idplayer` INT NOT NULL,
-  PRIMARY KEY (`idresultado`, `idcarta`, `idplayer`),
+  `iduser` INT NOT NULL,
+  PRIMARY KEY (`idresultado`, `idcarta`, `iduser`),
   INDEX `carta_fk_idx` (`idcarta` ASC) VISIBLE,
-  INDEX `player_fk_idx` (`idplayer` ASC) VISIBLE,
+  INDEX `user_fk_idx` (`iduser` ASC) VISIBLE,
   CONSTRAINT `resultado_fk`
     FOREIGN KEY (`idresultado`)
     REFERENCES `blackjack`.`resultado` (`idresultado`)
@@ -50,18 +41,14 @@ CREATE TABLE `blackjack`.`detalle_resultado` (
     REFERENCES `blackjack`.`carta` (`idcarta`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `player_fk`
-    FOREIGN KEY (`idplayer`)
-    REFERENCES `blackjack`.`player` (`idplayer`)
+  CONSTRAINT `user_fk`
+    FOREIGN KEY (`iduser`)
+    REFERENCES `user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-    
-INSERT INTO `blackjack`.`rol` (`id`, `descripcion`) VALUES ('1', 'CRUPIER');
-INSERT INTO `blackjack`.`rol` (`id`, `descripcion`) VALUES ('2', 'JUGADOR');
-INSERT INTO `blackjack`.`rol` (`id`, `descripcion`) VALUES ('3', 'ADMIN');
 
-INSERT INTO `blackjack`.`player` (`nombre`, `password`,`idrol`) VALUES ('CRUPIER', '', '1');
-INSERT INTO `blackjack`.`player` (`nombre`, `password`, `idrol`) VALUES ('EZEQUIEL', '123456', '2');
+INSERT INTO `blackjack`.`user` (`password`,`username`) VALUES ('$2a$10$Y3CeXzYoFOp8eVqAuUE0se8db5J2riDFbiVBU.6b5UfRzHXDlPdWu', 'CRUPIER');
+INSERT INTO `blackjack`.`user` (`password`,`username`) VALUES ('$2a$10$Y3CeXzYoFOp8eVqAuUE0se8db5J2riDFbiVBU.6b5UfRzHXDlPdWu', 'Ezequiel');
 
 INSERT INTO `blackjack`.`carta` (`numero`, `tipo`, `valor`, `img`) VALUES ('1', 'C', '11', '../../assets/img/cartas/1C.svg');
 INSERT INTO `blackjack`.`carta` (`numero`, `tipo`, `valor`, `img`) VALUES ('2', 'C', '2', '../../assets/img/cartas/2C.svg');
@@ -119,8 +106,8 @@ INSERT INTO `blackjack`.`carta` (`numero`, `tipo`, `valor`, `img`) VALUES ('11',
 INSERT INTO `blackjack`.`carta` (`numero`, `tipo`, `valor`, `img`) VALUES ('12', 'S', '10', '../../assets/img/cartas/12S.svg');
 INSERT INTO `blackjack`.`carta` (`numero`, `tipo`, `valor`, `img`) VALUES ('13', 'S', '10', '../../assets/img/cartas/13S.svg');
 
-INSERT INTO `blackjack`.`resultado` (`fecha`) VALUES (now());
+INSERT INTO `blackjack`.`resultado` (`fecha`, `ganador`) VALUES (now(), 2);
 
-INSERT INTO `blackjack`.`detalle_resultado` (`idresultado`, `idcarta`, `idplayer`) VALUES ('1', '24', '2');
-INSERT INTO `blackjack`.`detalle_resultado` (`idresultado`, `idcarta`, `idplayer`) VALUES ('1', '13', '1');
-INSERT INTO `blackjack`.`detalle_resultado` (`idresultado`, `idcarta`, `idplayer`) VALUES ('1', '44', '2');
+INSERT INTO `blackjack`.`detalle_resultado` (`idresultado`, `idcarta`, `iduser`) VALUES ('1', '24', '2');
+INSERT INTO `blackjack`.`detalle_resultado` (`idresultado`, `idcarta`, `iduser`) VALUES ('1', '13', '1');
+INSERT INTO `blackjack`.`detalle_resultado` (`idresultado`, `idcarta`, `iduser`) VALUES ('1', '44', '2');

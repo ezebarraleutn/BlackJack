@@ -15,6 +15,18 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './autenticacion/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { authInterceptorProviders } from "./autenticacion/auth.interceptor.service";
+import { LoginService } from './autenticacion/login.service';
+import { RegistrarService } from './autenticacion/registrar.service';
+import { PieGPComponent } from './reportes/jugador/pie-gp/pie-gp.component';
+import { NgChartsModule } from 'ng2-charts';
+import { LineCxpComponent } from './reportes/jugador/line-cxp/line-cxp.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { IndiceVictoriasComponent } from './reportes/juego/indice-victorias/indice-victorias.component';
+import { ReportesComponent } from './reportes/reportes.component';
+import { JugadasPorDiaComponent } from './reportes/juego/jugadas-por-dia/jugadas-por-dia.component';
+import { PromedioJugadasComponent } from './reportes/juego/promedio-jugadas/promedio-jugadas.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,15 +35,23 @@ import { ReactiveFormsModule } from '@angular/forms';
     CardComponent,
     RegistrarComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    PieGPComponent,
+    LineCxpComponent,
+    DashboardComponent,
+    IndiceVictoriasComponent,
+    ReportesComponent,
+    JugadasPorDiaComponent,
+    PromedioJugadasComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule
   ],
-  providers: [CartasService],
+  providers: [CartasService, LoginService, RegistrarService, authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

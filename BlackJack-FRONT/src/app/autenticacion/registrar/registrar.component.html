@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
 
-    <div class="col-md-4">
-        <h2>Registre sus datos para comenzar a jugar</h2>
+    <div class="col-md-6">
+        <h2>Registrar nuevo usuario</h2>
         <br>
         <form [formGroup]="formularioAlta">
             <div class="form-group">
@@ -14,12 +14,12 @@
                 <input type="password" class="form-control" id="password" formControlName="password">
             </div>
             <br>
-            <small id="msgError" class="form-text text-muted">{{mensajeError}}</small>
+            <p id="msgError" class="form-text text-muted" *ngIf="mensajeError" style="color: tomato;">{{mensajeError}}</p>
 
-            <button type="submit" class="btn btn-primary" (click)="guardar()">Guardar mis datos</button>
+            <button class="btn btn-primary" (click)="guardar()">Guardar mis datos</button>
             <br>
             <br>
-            <button type="submit" class="btn btn-success" (click)="login()">Ya estoy registrado</button>
+            <button class="btn btn-success" (click)="login()">Ya estoy registrado</button>
         </form>
     </div>
 </div>

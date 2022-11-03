@@ -1,5 +1,4 @@
 import { Carta } from "./carta";
-import { Player } from "./player";
 
 export interface Resultado{
     idresultado: number,
@@ -8,5 +7,5 @@ export interface Resultado{
     cartasC: Carta[],
     totalJ: number,
     totalC: number,
-    jugador: Player
+    ganador: number
 }
