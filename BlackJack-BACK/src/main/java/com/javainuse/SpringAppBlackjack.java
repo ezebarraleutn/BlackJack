@@ -11,10 +11,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-public class SpringBootHelloWorldApplication {
+public class SpringAppBlackjack {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootHelloWorldApplication.class, args);
+        SpringApplication.run(SpringAppBlackjack.class, args);
     }
 
     @Bean
